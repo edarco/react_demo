@@ -1,102 +1,55 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, InputGroup, FormControl, Button, Card, Form } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import idGenerator from '../helpers/idGenerator';
+import NewTask from './NewTask';
+import Task from './Task';
 
 class ToDo extends Component {
 
     state = {
-        inputValue: '',
         tasks: []
     };
 
-    handleInputChange = (event) => {
-        this.setState({
-            inputValue: event.target.value
-        });
-    };
+    addTask = (inputValue) => {
+        const tasks = [...this.state.tasks];
 
-    addTask = () => {
-        const { inputValue } = this.state;
+        const newTask = {
+            id: idGenerator(),
+            text: inputValue
+        };
 
-        if (inputValue === '') {
-            return true;
-        }
-
-        // const tasks = [...this.state.tasks];
-        // tasks.unshift(inputValue);
-
-        const curTask = { id: idGenerator(), text: inputValue };
-        const tasks = [curTask, ...this.state.tasks];
+        tasks.unshift(newTask);
 
         this.setState({
             tasks,
-            inputValue: ''
         });
     };
 
-    handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            this.addTask();
-        }
-    };
-
-    deleteTask = (key) => {
-        const tasks = this.state.tasks.filter(function (task) {
-            return task.id !== key;
-        });
-
+    removeTask = (taskId) => () => {
+        const newTasks = this.state.tasks.filter(task => task.id !== taskId);
         this.setState({
-            tasks
+            tasks: newTasks
         });
-    };
-
-    createCard = (task) => {
-        return (
-            <Col md="4" className='my-3'>
-                <Card key={task.id}>
-                    <Card.Body>
-                        <Form.Check
-                            type="checkbox"
-                            id={task.id}
-                            label="Check me out"
-                            className="float-right"
-                        />
-                        <Card.Text>
-                            {task.text}
-                        </Card.Text>
-                        <Button
-                            onClick={() => this.deleteTask(task.id)}
-                            variant="primary">Delete</Button>
-                    </Card.Body>
-                </Card>
-            </Col>
-        )
     };
 
     render() {
 
-        const tasksComponents = this.state.tasks
-            .map((task, index) => this.createCard(task));
+        const tasksComponents = this.state.tasks.map((task) =>
+            <Col key={task.id}>
+                <Task
+                    data={task}
+                    onRemove={this.removeTask}
+                />
+            </Col>
+        );
 
         return (
-            <Container fluid>
+            <Container fluid={true}>
                 <Row>
                     <Col md={{ span: 6, offset: 3 }}>
-                        <InputGroup className="my-3">
-                            <FormControl
-                                value={this.state.inputValue}
-                                onChange={this.handleInputChange}
-                                onKeyDown={this.handleKeyDown}
-                                placeholder="Input task"
-                                aria-label="Input task"
-                                aria-describedby="basic-addon2"
-                            />
-                            <InputGroup.Append>
-                                <Button
-                                    onClick={this.addTask}
-                                    variant="outline-primary">Add task</Button>
-                            </InputGroup.Append>
-                        </InputGroup>
+                        <NewTask
+                            onAdd={this.addTask}
+                        />
                     </Col>
                 </Row>
                 <Row>
