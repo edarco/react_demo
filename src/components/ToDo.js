@@ -4,13 +4,14 @@ import idGenerator from '../helpers/idGenerator';
 import NewTask from './NewTask';
 import Task from './Task/Task';
 import Confirm from './Confirm';
+import Modal from './Modal';
 
 class ToDo extends Component {
-
     state = {
         tasks: [],
         checkedTasks: new Set(),
-        showConfirm: false
+        showConfirm: false,
+        editTask: null
     };
 
     addTask = (inputValue) => {
@@ -24,7 +25,7 @@ class ToDo extends Component {
         tasks.unshift(newTask);
 
         this.setState({
-            tasks,
+            tasks
         });
     };
 
@@ -48,11 +49,16 @@ class ToDo extends Component {
 
     };
 
-    onRemoveSelected = ()=>{
+    handleEdit = (task) => () => {
+        this.setState({ editTask: task });
+
+    };
+
+    onRemoveSelected = () => {
         const checkedTasks = new Set(this.state.checkedTasks);
         let tasks = [...this.state.tasks];
-        checkedTasks.forEach(taskId=>{
-            tasks = tasks.filter(task=>task.id !== taskId);
+        checkedTasks.forEach(taskId => {
+            tasks = tasks.filter(task => task.id !== taskId);
         });
 
         checkedTasks.clear();
@@ -71,15 +77,33 @@ class ToDo extends Component {
         });
     };
 
+    handleSave = (taskId, value) => {
+        const tasks = [...this.state.tasks];
+
+        const taskIndex = tasks.findIndex(task => task.id === taskId);
+
+        tasks[taskIndex] = {
+            ...tasks[taskIndex],
+            text: value
+        };
+
+        this.setState({
+            tasks: tasks,
+            editTask: null
+        });
+
+    };
+
 
     render() {
-const {checkedTasks, tasks, showConfirm} = this.state;
+        const { checkedTasks, tasks, showConfirm, editTask } = this.state;
         const tasksComponents = tasks.map((task) =>
             <Col key={task.id}>
                 <Task
                     data={task}
                     onRemove={this.removeTask}
                     onCheck={this.handleCheck(task.id)}
+                    onEdit={this.handleEdit(task)}
                 />
             </Col>
         );
@@ -97,20 +121,26 @@ const {checkedTasks, tasks, showConfirm} = this.state;
                     {tasksComponents}
                 </Row>
                 <Row className='justify-content-center'>
-                <Button 
-                variant="danger"
-                disabled = {!checkedTasks.size}
-                onClick = {this.toggleConfirm}
-                >Remove selected
+                    <Button
+                        variant="danger"
+                        disabled={!checkedTasks.size}
+                        onClick={this.toggleConfirm}
+                    >Remove selected
                 </Button>
                 </Row>
                 { showConfirm &&
-                    <Confirm 
-                    count = {checkedTasks.size}
-                onSubmit = {this.onRemoveSelected}
-                onCancel = {this.toggleConfirm}
+                    <Confirm
+                        count={checkedTasks.size}
+                        onSubmit={this.onRemoveSelected}
+                        onCancel={this.toggleConfirm}
                     />
                 }
+                { !!editTask &&
+                    <Modal
+                        value={editTask}
+                        onSave={this.handleSave}
+                        onCancel={this.handleEdit(null)}
+                    />}
             </Container>
         );
     }

@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import styles from './task.module.css';
+import PropTypes from 'prop-types';
 
 class Task extends PureComponent {
 
@@ -18,15 +19,20 @@ class Task extends PureComponent {
         this.props.onCheck();
     };
 
+    toggleModal = () => {
+        this.setState({
+            showModal: !this.state.showModal
+        });
+    };
+
     render() {
-        const { data, onRemove } = this.props;
+        const { data, onRemove, onEdit } = this.props;
         const { checked } = this.state;
 
         const cardClasses = ['card', styles.task];
         if (checked) {
             cardClasses.push(styles.checked);
         }
-
 
         return (
             <Card
@@ -44,6 +50,14 @@ class Task extends PureComponent {
                         {data.text}
                     </Card.Text>
                     <Button
+                        className='m-1'
+                        variant="info"
+                        onClick={onEdit}
+                    >
+                        <FontAwesomeIcon icon={faEdit} />
+                    </Button>
+                    <Button
+                        className='m-1'
                         variant="danger"
                         onClick={onRemove(data.id)}
                     >
@@ -53,7 +67,13 @@ class Task extends PureComponent {
             </Card>
         );
     }
-
 }
+
+Task.propTypes = {
+    data: PropTypes.object.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onCheck: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired
+};
 
 export default Task;
