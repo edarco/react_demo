@@ -26,7 +26,7 @@ class Task extends PureComponent {
     };
 
     render() {
-        const { data, onRemove, onEdit } = this.props;
+        const { data, onRemove, onEdit, disabled } = this.props;
         const { checked } = this.state;
 
         const cardClasses = ['card', styles.task];
@@ -53,6 +53,7 @@ class Task extends PureComponent {
                         className='m-1'
                         variant="info"
                         onClick={onEdit}
+                        disabled={disabled}
                     >
                         <FontAwesomeIcon icon={faEdit} />
                     </Button>
@@ -60,6 +61,7 @@ class Task extends PureComponent {
                         className='m-1'
                         variant="danger"
                         onClick={onRemove(data.id)}
+                        disabled={disabled}
                     >
                         <FontAwesomeIcon icon={faTrash} />
                     </Button>

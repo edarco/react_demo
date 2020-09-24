@@ -104,6 +104,7 @@ class ToDo extends Component {
                     onRemove={this.removeTask}
                     onCheck={this.handleCheck(task.id)}
                     onEdit={this.handleEdit(task)}
+                    disabled={!!checkedTasks.size}
                 />
             </Col>
         );
@@ -114,6 +115,7 @@ class ToDo extends Component {
                     <Col md={{ span: 6, offset: 3 }}>
                         <NewTask
                             onAdd={this.addTask}
+                            disabled={!!checkedTasks.size}
                         />
                     </Col>
                 </Row>
