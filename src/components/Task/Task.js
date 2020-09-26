@@ -38,16 +38,15 @@ class Task extends PureComponent {
             <Card
                 className={cardClasses.join(' ')}
             >
-                {/* className={`card ${styles.task} ${checked ? styles.checked : ''}`} */}
                 <input
                     type='checkbox'
                     className={styles.checkbox}
                     onClick={this.toggleCheckbox}
                 />
                 <Card.Body>
-                    <Card.Title>Task</Card.Title>
+                    <Card.Title>{data.title}</Card.Title>
                     <Card.Text>
-                        {data.text}
+                        {data.description}
                     </Card.Text>
                     <Button
                         className='m-1'
