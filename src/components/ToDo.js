@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import NewTask from './NewTask';
+import NewTask from './NewTask/NewTask';
 import Task from './Task/Task';
 import Confirm from './Confirm';
 import Modal from './Modal';
@@ -39,11 +39,7 @@ class ToDo extends Component {
 
     }
 
-    addTask = (inputValue) => {
-
-        const data = {
-            title: inputValue
-        }
+    addTask = (data) => {
 
         fetch('http://localhost:3001/task', {
             method: 'POST',
@@ -68,14 +64,31 @@ class ToDo extends Component {
             .catch((err) => {
                 console.log('err', err);
             });
-
     };
 
     removeTask = (taskId) => () => {
-        const newTasks = this.state.tasks.filter(task => task._id !== taskId);
-        this.setState({
-            tasks: newTasks
-        });
+
+        fetch(`http://localhost:3001/task/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+
+                if (data.error) {
+                    throw data.error;
+                }
+                const newTasks = this.state.tasks.filter(task => task._id !== taskId);
+                this.setState({
+                    tasks: newTasks
+                });
+
+            })
+            .catch((err) => {
+                console.log('err', err);
+            });
     };
 
 
@@ -98,18 +111,39 @@ class ToDo extends Component {
 
     onRemoveSelected = () => {
         const checkedTasks = new Set(this.state.checkedTasks);
-        let tasks = [...this.state.tasks];
-        checkedTasks.forEach(taskId => {
-            tasks = tasks.filter(task => task._id !== taskId);
-        });
 
-        checkedTasks.clear();
+        fetch(`http://localhost:3001/task/`, {
+            method: 'DELETE',
+            body: JSON.stringify({
+                tasks: [...checkedTasks]
+            }),
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error) {
+                    throw data.error;
+                }
+                let tasks = [...this.state.tasks];
 
-        this.setState({
-            tasks,
-            checkedTasks,
-            showConfirm: false
-        });
+                checkedTasks.forEach(taskId => {
+                    tasks = tasks.filter(task => task._id !== taskId);
+                });
+
+                checkedTasks.clear();
+
+                this.setState({
+                    tasks,
+                    checkedTasks,
+                    showConfirm: false
+                });
+
+            })
+            .catch((err) => {
+                console.log('err', err);
+            });
 
     };
 
@@ -159,7 +193,7 @@ class ToDo extends Component {
         return (
             <Container fluid={true}>
                 <Row>
-                    <Col md={{ span: 6, offset: 3 }}>
+                    <Col md={{ span: 6, offset: 3 }} className="text-center">
                         <Button
                             variant="primary"
                             className='m-3'
