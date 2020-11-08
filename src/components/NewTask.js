@@ -1,66 +1,72 @@
 import React, { PureComponent } from 'react';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import { FormControl, Button, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 class NewTask extends PureComponent {
 
     state = {
-        inputValue: ''
+        title: '',
+        description: '',
+        date: ''
     }
 
     handleChange = (event) => {
         this.setState({
-            inputValue: event.target.value
+            title: event.target.value
         });
     };
 
     handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            this.sendValue();
+            event.preventDefault();
+            this.handleSave();
         }
     };
 
-    sendValue = () => {
-        const { inputValue } = this.state;
-        if (!inputValue || inputValue.trim() === '') {
-            return;
+    handleSave = () => {
+        const { title } = this.state;
+        if (title && title.trim() !== '') {
+            this.props.onAdd(title);
         }
-        this.props.onAdd(inputValue);
-        this.setState({
-            inputValue: ''
-        });
     };
 
     render() {
-        const { disabled } = this.props;
 
         return (
-            <InputGroup className="my-3">
-                <FormControl
-                    value={this.state.inputValue}
-                    onChange={this.handleChange}
-                    onKeyDown={this.handleKeyDown}
-                    placeholder="Input task"
-                    aria-label="Input task"
-                    aria-describedby="basic-addon2"
-                    disabled={disabled}
-                />
-                <InputGroup.Append>
-                    <Button
-                        onClick={this.sendValue}
-                        variant="outline-primary"
-                        disabled={disabled}
-                    >
-                        Add task
-                    </Button>
-                </InputGroup.Append>
-            </InputGroup>
+            <Modal
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                show={true}
+                onHide={this.props.onCancel}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Add new task
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FormControl
+                        value={this.state.title}
+                        onChange={this.handleChange}
+                        onKeyDown={this.handleKeyDown}
+                        placeholder="Input task"
+                        aria-label="Input task"
+                        aria-describedby="basic-addon2"
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleSave} variant='success'>Add</Button>
+                    <Button onClick={this.props.onCancel} variant='secondary'>Cancel</Button>
+                </Modal.Footer>
+            </Modal>
         );
     }
 }
 
 NewTask.propTypes = {
-    onAdd: PropTypes.func.isRequired
+    onAdd: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired
 };
 
 export default NewTask;

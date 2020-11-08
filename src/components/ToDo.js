@@ -10,9 +10,9 @@ class ToDo extends Component {
         tasks: [],
         checkedTasks: new Set(),
         showConfirm: false,
-        editTask: null
+        editTask: null,
+        openNewTaskModal: false
     };
-
 
     componentDidMount() {
         fetch('http://localhost:3001/task', {
@@ -39,8 +39,6 @@ class ToDo extends Component {
 
     }
 
-
-
     addTask = (inputValue) => {
 
         const data = {
@@ -62,7 +60,8 @@ class ToDo extends Component {
                 }
 
                 this.setState({
-                    tasks: [task, ...this.state.tasks]
+                    tasks: [task, ...this.state.tasks],
+                    openNewTaskModal: false
                 });
 
             })
@@ -137,9 +136,14 @@ class ToDo extends Component {
 
     };
 
+    toggleNewTaskModal = () => {
+        this.setState({
+            openNewTaskModal: !this.state.openNewTaskModal
+        })
+    };
 
     render() {
-        const { checkedTasks, tasks, showConfirm, editTask } = this.state;
+        const { checkedTasks, tasks, showConfirm, editTask, openNewTaskModal } = this.state;
         const tasksComponents = tasks.map((task) =>
             <Col key={task._id}>
                 <Task
@@ -156,10 +160,13 @@ class ToDo extends Component {
             <Container fluid={true}>
                 <Row>
                     <Col md={{ span: 6, offset: 3 }}>
-                        <NewTask
-                            onAdd={this.addTask}
-                            disabled={!!checkedTasks.size}
-                        />
+                        <Button
+                            variant="primary"
+                            className='m-3'
+                            disabled={checkedTasks.size}
+                            onClick={this.toggleNewTaskModal}
+                        >Add new task
+                </Button>
                     </Col>
                 </Row>
                 <Row>
@@ -185,7 +192,16 @@ class ToDo extends Component {
                         value={editTask}
                         onSave={this.handleSave}
                         onCancel={this.handleEdit(null)}
-                    />}
+                    />
+                }
+
+                { openNewTaskModal &&
+                    <NewTask
+                        onAdd={this.addTask}
+                        onCancel={this.toggleNewTaskModal}
+                    />
+                }
+
             </Container>
         );
     }
