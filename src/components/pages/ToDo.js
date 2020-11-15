@@ -4,6 +4,7 @@ import NewTask from '../NewTask/NewTask';
 import Task from '../Task/Task';
 import Confirm from '../Confirm';
 import EditTaskModal from '../EditTaskModal';
+import Spinner from '../Spinner/Spinner';
 
 class ToDo extends Component {
     state = {
@@ -170,7 +171,7 @@ class ToDo extends Component {
                 }
 
                 const tasks = [...this.state.tasks];
-                const foundIndex = tasks.findIndex(task=> task._id === editedTask._id);
+                const foundIndex = tasks.findIndex(task => task._id === editedTask._id);
                 tasks[foundIndex] = editedTask;
 
                 this.setState({
@@ -206,53 +207,60 @@ class ToDo extends Component {
         );
 
         return (
-            <Container fluid={true}>
-                <Row>
-                    <Col md={{ span: 6, offset: 3 }} className="text-center">
-                        <Button
-                            variant="primary"
-                            className='m-3'
-                            disabled={checkedTasks.size}
-                            onClick={this.toggleNewTaskModal}
-                        >Add new task
-                </Button>
-                    </Col>
-                </Row>
-                <Row>
-                    {tasksComponents}
-                </Row>
-                <Row className='justify-content-center'>
-                    <Button
-                        variant="danger"
-                        disabled={!checkedTasks.size}
-                        onClick={this.toggleConfirm}
-                    >Remove selected
-                </Button>
-                </Row>
-                { showConfirm &&
-                    <Confirm
-                        count={checkedTasks.size}
-                        onSubmit={this.onRemoveSelected}
-                        onCancel={this.toggleConfirm}
-                    />
+            <>
+                {
+                    tasks.length ?
+                        <Container fluid={true}>
+                            <Row>
+                                <Col md={{ span: 6, offset: 3 }} className="text-center">
+                                    <Button
+                                        variant="primary"
+                                        className='m-3'
+                                        disabled={checkedTasks.size}
+                                        onClick={this.toggleNewTaskModal}
+                                    >
+                                        Add new task
+                                    </Button>
+                                </Col>
+                            </Row>
+                            <Row>
+                                {tasksComponents}
+                            </Row>
+                            <Row className='justify-content-center'>
+                                <Button
+                                    variant="danger"
+                                    disabled={!checkedTasks.size}
+                                    onClick={this.toggleConfirm}
+                                >
+                                    Remove selected
+                                </Button>
+                            </Row>
+                            {showConfirm &&
+                                <Confirm
+                                    count={checkedTasks.size}
+                                    onSubmit={this.onRemoveSelected}
+                                    onCancel={this.toggleConfirm}
+                                />
+                            }
+                            {!!editTask &&
+                                <EditTaskModal
+                                    data={editTask}
+                                    onSave={this.handleSave}
+                                    onCancel={this.handleEdit(null)}
+                                />
+                            }
+                            {openNewTaskModal &&
+                                <NewTask
+                                    onAdd={this.addTask}
+                                    onCancel={this.toggleNewTaskModal}
+                                />
+                            }
+                        </Container>
+                        :
+                        <Spinner />
                 }
-                { !!editTask &&
-                    <EditTaskModal
-                        value={editTask}
-                        data={editTask}
-                        onSave={this.handleSave}
-                        onCancel={this.handleEdit(null)}
-                    />
-                }
+            </>
 
-                { openNewTaskModal &&
-                    <NewTask
-                        onAdd={this.addTask}
-                        onCancel={this.toggleNewTaskModal}
-                    />
-                }
-
-            </Container>
         );
     }
 }
