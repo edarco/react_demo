@@ -1,3 +1,19 @@
 .app {
     padding: 10px;
 }
+
+.navLink {
+    display: block;
+    padding: .5rem;
+    color: rgba(255,255,255,.5);
+    text-decoration: none;
+
+}
+.navLink:hover {
+    text-decoration: none;
+    color: rgba(255,255,255,.75);
+}
+.activeLink, .activeLink:hover {
+    color: #fbfbfb;
+    font-weight: bold;
+}
