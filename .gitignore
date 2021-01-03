@@ -25,5 +25,7 @@ yarn-error.log*
 # my added for webstorm and vscode
 .idea
 .vsode
+/.vscode
 .vscode
+.vscode/*
 *.log
