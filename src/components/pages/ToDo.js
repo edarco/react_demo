@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import NewTask from '../NewTask/NewTask';
 import Task from '../Task/Task';
 import Confirm from '../Confirm';
 import EditTaskModal from '../EditTaskModal';
-import Spinner from '../Spinner/Spinner';
 import { connect } from 'react-redux';
 import { getTasks } from '../../store/actions';
 
-class ToDo extends Component {
+class ToDo extends PureComponent {
     state = {
-        tasks: [],
         checkedTasks: new Set(),
         showConfirm: false,
         editTask: null,
@@ -21,32 +19,13 @@ class ToDo extends Component {
         this.props.getTasks();
     }
 
-    addTask = (data) => {
-
-        fetch('http://localhost:3001/task', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((task) => {
-
-                if (task.error) {
-                    throw task.error;
-                }
-
-                this.setState({
-                    tasks: [task, ...this.state.tasks],
-                    openNewTaskModal: false
-                });
-
-            })
-            .catch((err) => {
-                console.log('err', err);
+    componentDidUpdate(prevProps) {
+        if (!prevProps.addTaskSuccess && this.props.addTaskSuccess) {
+            this.setState({
+                openNewTaskModal: false
             });
-    };
+        }
+    }
 
     removeTask = (taskId) => () => {
 
@@ -175,7 +154,7 @@ class ToDo extends Component {
 
     render() {
         const { checkedTasks, showConfirm, editTask, openNewTaskModal } = this.state;
-        const { tasks, showSpinner } = this.props;
+        const { tasks } = this.props;
 
         const tasksComponents = tasks.map((task) =>
             <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2}>
@@ -190,78 +169,61 @@ class ToDo extends Component {
         );
 
         return (
-            <>
-                {
-                    showSpinner ?
-                        <Spinner />
-                        :
-                        <Container fluid={true}>
-                            <Row>
-                                <Col md={{ span: 6, offset: 3 }} className="text-center">
-                                    <Button
-                                        variant="primary"
-                                        className='m-3'
-                                        disabled={checkedTasks.size}
-                                        onClick={this.toggleNewTaskModal}
-                                    >
-                                        Add new task
+            <Container fluid={true}>
+                <Row>
+                    <Col md={{ span: 6, offset: 3 }} className="text-center">
+                        <Button
+                            variant="primary"
+                            className='m-3'
+                            disabled={checkedTasks.size}
+                            onClick={this.toggleNewTaskModal}
+                        >
+                            Add new task
                                     </Button>
-                                </Col>
-                            </Row>
-                            <Row>
-                                {tasksComponents}
-                            </Row>
-                            <Row className='justify-content-center'>
-                                <Button
-                                    variant="danger"
-                                    disabled={!checkedTasks.size}
-                                    onClick={this.toggleConfirm}
-                                >
-                                    Remove selected
+                    </Col>
+                </Row>
+                <Row>
+                    {tasksComponents}
+                </Row>
+                <Row className='justify-content-center'>
+                    <Button
+                        variant="danger"
+                        disabled={!checkedTasks.size}
+                        onClick={this.toggleConfirm}
+                    >
+                        Remove selected
                                 </Button>
-                            </Row>
-                            {showConfirm &&
-                                <Confirm
-                                    count={checkedTasks.size}
-                                    onSubmit={this.onRemoveSelected}
-                                    onCancel={this.toggleConfirm}
-                                />
-                            }
-                            {!!editTask &&
-                                <EditTaskModal
-                                    data={editTask}
-                                    onSave={this.handleSave}
-                                    onCancel={this.handleEdit(null)}
-                                />
-                            }
-                            {openNewTaskModal &&
-                                <NewTask
-                                    onAdd={this.addTask}
-                                    onCancel={this.toggleNewTaskModal}
-                                />
-                            }
-                        </Container>
+                </Row>
+                {showConfirm &&
+                    <Confirm
+                        count={checkedTasks.size}
+                        onSubmit={this.onRemoveSelected}
+                        onCancel={this.toggleConfirm}
+                    />
                 }
-            </>
-
+                {!!editTask &&
+                    <EditTaskModal
+                        data={editTask}
+                        onSave={this.handleSave}
+                        onCancel={this.handleEdit(null)}
+                    />
+                }
+                {openNewTaskModal &&
+                    <NewTask
+                        onCancel={this.toggleNewTaskModal}
+                    />
+                }
+            </Container>
         );
     }
 }
 
-// export default ToDo;
-
 const mapStateToProps = (state) => {
     return {
         tasks: state.tasks,
-        showSpinner: state.loading
+        addTaskSuccess: state.addTaskSuccess
     };
 };
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         changeCount: (value) => { dispatch({ type: 'CHANGE_COUNT', value }) }
-//     };
-// };
 
 const mapDispatchToProps = {
     getTasks: getTasks
