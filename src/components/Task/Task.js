@@ -45,18 +45,15 @@ class Task extends PureComponent {
                     onClick={this.toggleCheckbox}
                 />
                 <Card.Body>
-<<<<<<< HEAD
-                    {disabled ?
-                        <Card.Title>{data.title}</Card.Title> :
-                        <Link to={`/task/${data._id}`}>
+                    {
+                        disabled
+                            ?
                             <Card.Title>{data.title}</Card.Title>
-                        </Link>
+                            :
+                            <Link to={`/task/${data._id}`}>
+                                <Card.Title>{data.title}</Card.Title>
+                            </Link>
                     }
-=======
-                    <Link to={`/task/${data._id}`}>
-                        <Card.Title>{data.title}</Card.Title>
-                    </Link>
->>>>>>> b26996afadd7e6b09b2db89cfe52caf3265b54e6
                     <Card.Text>
                         Description: {data.description}
                     </Card.Text>
