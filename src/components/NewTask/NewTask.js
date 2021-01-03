@@ -149,7 +149,7 @@ NewTask.propTypes = {
 };
 
 const mapDispatchToProps = {
-    addTask: addTask
+    addTask
 };
 
 export default connect(null,mapDispatchToProps)(NewTask);
