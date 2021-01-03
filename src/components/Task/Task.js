@@ -5,6 +5,8 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import styles from './task.module.css';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { removeTask } from '../../store/actions';
 
 class Task extends PureComponent {
 
@@ -27,7 +29,7 @@ class Task extends PureComponent {
     };
 
     render() {
-        const { data, onRemove, onEdit, disabled } = this.props;
+        const { data, removeTask, onEdit, disabled } = this.props;
         const { checked } = this.state;
 
         const cardClasses = ['card', styles.task];
@@ -90,7 +92,7 @@ class Task extends PureComponent {
                         <Button
                             className='m-1'
                             variant="danger"
-                            onClick={onRemove(data._id)}
+                            onClick={() => removeTask(data._id)}
                             disabled={disabled}
                         >
                             <FontAwesomeIcon icon={faTrash} />
@@ -105,9 +107,13 @@ class Task extends PureComponent {
 
 Task.propTypes = {
     data: PropTypes.object.isRequired,
-    onRemove: PropTypes.func.isRequired,
     onCheck: PropTypes.func.isRequired,
-    onEdit: PropTypes.func.isRequired
+    onEdit: PropTypes.func.isRequired,
+    disabled: PropTypes.bool
 };
 
-export default Task;
+const mapDispatchToProps = {
+    removeTask
+}
+
+export default connect(null, mapDispatchToProps)(Task);

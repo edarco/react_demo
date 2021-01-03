@@ -50,7 +50,6 @@ class App extends PureComponent {
           />
 
         </div>
-
         { showSpinner && <Spinner />}
       </>
     );
