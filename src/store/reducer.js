@@ -32,7 +32,6 @@ export const mainReducer = (state = defaultState, action) => {
             };
         }
 
-
         case actionTypes.GET_TASKS_SUCCESS: {
             return {
                 ...state,
