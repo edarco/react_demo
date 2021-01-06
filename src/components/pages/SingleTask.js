@@ -1,123 +1,66 @@
 import React, { PureComponent } from 'react';
-import Spinner from '../Spinner/Spinner';
 import { Card, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import EditTaskModal from '../EditTaskModal';
+import { formatDate } from '../../helpers/utils';
+import { getTask, removeTask } from '../../store/actions';
+import { connect } from 'react-redux';
 
 class SingleTask extends PureComponent {
 
     state = {
-        task: null,
         isEdit: false
     };
 
     componentDidMount() {
-
         const taskId = this.props.match.params.id;
+        this.props.getTask(taskId);
+    }
 
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: 'GET',
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((task) => {
+    componentDidUpdate(prevProps) {
+        if (!prevProps.removeTaskSuccess && this.props.removeTaskSuccess) {
+            this.props.history.push('/');
+        }
 
-                if (task.error) {
-                    throw task.error;
-                }
-
-                this.setState({
-                    task
-                });
-
-            })
-            .catch((err) => {
-                // console.log('err', err);
-                this.props.history.push('/not-found');
-            });
+        if (!prevProps.editTaskSuccess && this.props.editTaskSuccess) {
+            this.toggleEditModal();
+        }
     }
 
 
     handleRemove = () => {
-
-        const taskId = this.state.task._id;
-
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: 'DELETE',
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-
-                if (data.error) {
-                    throw data.error;
-                }
-                this.props.history.push('/');
-            })
-            .catch((err) => {
-                console.log('err', err);
-            });
+        const taskId = this.props.task._id;
+        this.props.removeTask(taskId, 'single');
     };
 
     toggleEditModal = () => {
         this.setState({
             isEdit: !this.state.isEdit
         });
-
-
     };
 
-
-    handleSave = (taskId, data) => {
-
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((editedTask) => {
-
-                if (editedTask.error) {
-                    throw editedTask.error;
-                }
-
-                this.setState({
-                    task: editedTask,
-                    isEdit: false
-                });
-
-            })
-            .catch((err) => {
-                console.log('err', err);
-            });
-
-    };
 
     render() {
-        const { task, isEdit } = this.state;
+        const { isEdit } = this.state;
+        const { task, loading } = this.props;
 
         return (
             <>
                 {
                     task ?
-                        <Card className='card'>
+                        <Card border="light">
                             <Card.Body>
-                                <Card.Title>{task.title}</Card.Title>
+                                <Card.Title as="h3">{task.title}</Card.Title>
                                 <Card.Text>
                                     Description: {task.description}
                                 </Card.Text>
                                 <Card.Text>
-                                    Date: {task.date ? task.date.slice(0, 10) : 'none'}
+                                    Date: {formatDate(task.date)}
                                 </Card.Text>
-
+                                <Card.Text>
+                                    Created: {formatDate(task.created_at)}
+                                </Card.Text>
                                 <OverlayTrigger
                                     placement="top"
                                     overlay={
@@ -156,17 +99,35 @@ class SingleTask extends PureComponent {
                                 isEdit &&
                                 <EditTaskModal
                                     data={task}
-                                    onSave={this.handleSave}
                                     onCancel={this.toggleEditModal}
+                                    from='single'
                                 />
                             }
                         </Card>
                         :
-                        <Spinner />
+                        <>
+                            {
+                                !loading && <div>Task is not found!</div>
+                            }
+                        </>
                 }
             </>
         );
     }
 }
 
-export default SingleTask;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        task: state.task,
+        removeTaskSuccess: state.removeTaskSuccess,
+        editTaskSuccess: state.editTaskSuccess
+    };
+}
+
+const mapDispatchToProps = {
+    getTask,
+    removeTask
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);

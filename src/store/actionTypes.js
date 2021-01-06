@@ -1,6 +1,8 @@
 export const LOADING = 'LOADING';
 export const ERROR = 'ERROR';
 
+export const GET_TASK_SUCCESS = 'GET_TASK_SUCCESS';
+
 export const GET_TASKS_SUCCESS = 'GET_TASKS_SUCCESS';
 
 export const ADDING_TASK = 'ADDING_TASK';
