@@ -24,7 +24,9 @@ export const mainReducer = (state = defaultState, action) => {
 
 
     switch (action.type) {
-        case actionTypes.LOADING: return loadingState;
+        case actionTypes.LOADING: {
+            return loadingState;
+        }
 
         case actionTypes.ERROR: {
             return {
@@ -53,12 +55,12 @@ export const mainReducer = (state = defaultState, action) => {
         }
 
 
-        case actionTypes.ADDING_TASK:
+        case actionTypes.ADDING_TASK: {
             return {
                 ...loadingState,
                 addTaskSuccess: false
             };
-
+        }    
 
         case actionTypes.ADD_TASK_SUCCESS: {
             return {
@@ -71,11 +73,12 @@ export const mainReducer = (state = defaultState, action) => {
         }
 
 
-        case actionTypes.REMOVING_TASK:
+        case actionTypes.REMOVING_TASK: {
             return {
                 ...loadingState,
                 removeTaskSuccess: false
             };
+        }
 
         case actionTypes.REMOVE_TASK_SUCCESS: {
 
@@ -104,11 +107,12 @@ export const mainReducer = (state = defaultState, action) => {
         }
 
 
-        case actionTypes.REMOVING_TASKS:
+        case actionTypes.REMOVING_TASKS: {
             return {
                 ...loadingState,
                 removeTasksSuccess: false
             };
+        }
 
         case actionTypes.REMOVE_TASKS_SUCCESS: {
 
@@ -128,11 +132,12 @@ export const mainReducer = (state = defaultState, action) => {
         }
 
 
-        case actionTypes.EDITING_TASK:
+        case actionTypes.EDITING_TASK: {
             return {
                 ...loadingState,
                 editTaskSuccess: false
             };
+        }
 
         case actionTypes.EDIT_TASK_SUCCESS: {
 
@@ -160,6 +165,45 @@ export const mainReducer = (state = defaultState, action) => {
                 };
             }
 
+        }
+
+
+        case actionTypes.CHANGING_TASK_STATUS: {
+            return loadingState;
+        }
+
+        case actionTypes.CHANGE_TASK_STATUS_SUCCESS: {
+            let message;
+
+            if(action.status === 'done') {
+                message = 'Congratulations, you have completed the task 🎉!!!';
+            }
+            else {
+                message = 'The task is active now!!!';
+            }
+
+            const newState = {
+                ...state,
+                loading: false,
+                successMessage: message
+            };
+
+            if (action.from === 'single') {
+                return {
+                    ...newState,
+                    task: action.editedTask
+                };
+            }
+            else {
+                const tasks = [...state.tasks];
+                const foundIndex = tasks.findIndex(task => task._id === action.editedTask._id);
+                tasks[foundIndex] = action.editedTask;
+
+                return {
+                    ...newState,
+                    tasks: tasks
+                };
+            }
 
         }
 

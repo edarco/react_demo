@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Card, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit, faCheck, faHistory } from '@fortawesome/free-solid-svg-icons';
 import EditTaskModal from '../EditTaskModal';
 import { formatDate } from '../../helpers/utils';
-import { getTask, removeTask } from '../../store/actions';
+import { getTask, removeTask, changeTaskStatus } from '../../store/actions';
 import { connect } from 'react-redux';
 
 class SingleTask extends PureComponent {
@@ -49,9 +49,9 @@ class SingleTask extends PureComponent {
             <>
                 {
                     task ?
-                        <Card border="light">
+                        <Card border={task.status === 'active' && 'info'} className='text-center'>
                             <Card.Body>
-                                <Card.Title as="h3">{task.title}</Card.Title>
+                                <Card.Title as="h3" className="my-4">{task.title}</Card.Title>
                                 <Card.Text>
                                     Description: {task.description}
                                 </Card.Text>
@@ -61,6 +61,45 @@ class SingleTask extends PureComponent {
                                 <Card.Text>
                                     Created: {formatDate(task.created_at)}
                                 </Card.Text>
+                                <Card.Text>
+                                    Status: {task.status}
+                                </Card.Text>
+                                {
+                                    task.status === 'active' ?
+                                        < OverlayTrigger
+                                            placement="top"
+                                            overlay={
+                                                <Tooltip>
+                                                    <strong>Mark as done</strong>
+                                                </Tooltip>
+                                            }
+                                        >
+                                            <Button
+                                                className='m-1'
+                                                variant="success"
+                                                onClick={() => this.props.changeTaskStatus(task._id, { status: 'done' }, 'single')}
+                                            >
+                                                <FontAwesomeIcon icon={faCheck} />
+                                            </Button>
+                                        </OverlayTrigger>
+                                        :
+                                        <OverlayTrigger
+                                            placement="top"
+                                            overlay={
+                                                <Tooltip>
+                                                    <strong>Mark as active</strong>
+                                                </Tooltip>
+                                            }
+                                        >
+                                            <Button
+                                                className='m-1'
+                                                variant="warning"
+                                                onClick={() => this.props.changeTaskStatus(task._id, { status: 'active' }, 'single')}
+                                            >
+                                                <FontAwesomeIcon icon={faHistory} />
+                                            </Button>
+                                        </OverlayTrigger>
+                                }
                                 <OverlayTrigger
                                     placement="top"
                                     overlay={
@@ -107,7 +146,12 @@ class SingleTask extends PureComponent {
                         :
                         <>
                             {
-                                loading || <div>Task is not found!</div>
+                                loading ||
+                                <Card className='text-center'>
+                                    <Card.Body>
+                                        <Card.Text>Task is not found!</Card.Text>
+                                    </Card.Body>
+                                </Card>
                             }
                         </>
                 }
@@ -127,7 +171,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     getTask,
-    removeTask
+    removeTask,
+    changeTaskStatus
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);

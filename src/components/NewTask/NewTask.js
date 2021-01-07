@@ -85,6 +85,8 @@ class NewTask extends PureComponent {
             return;
         }
 
+        date = date || new Date();
+        
         const data = {
             title,
             description,
