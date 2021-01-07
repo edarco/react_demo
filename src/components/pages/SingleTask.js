@@ -107,7 +107,7 @@ class SingleTask extends PureComponent {
                         :
                         <>
                             {
-                                !loading && <div>Task is not found!</div>
+                                loading || <div>Task is not found!</div>
                             }
                         </>
                 }
