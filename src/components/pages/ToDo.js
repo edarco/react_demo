@@ -4,6 +4,7 @@ import NewTask from '../NewTask/NewTask';
 import Task from '../Task/Task';
 import Confirm from '../Confirm';
 import EditTaskModal from '../EditTaskModal';
+import Search from '../Search/Search';
 import { connect } from 'react-redux';
 import { getTasks, removeTasks } from '../../store/actions';
 
@@ -94,6 +95,7 @@ class ToDo extends PureComponent {
         return (
             <Container fluid={true}>
                 <Row>
+                    <Search />
                     <Col md={{ span: 6, offset: 3 }} className="text-center">
                         <Button
                             variant="primary"

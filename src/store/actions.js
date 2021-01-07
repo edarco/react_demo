@@ -18,11 +18,16 @@ export function getTask(taskId) {
 }
 
 
-export function getTasks() {
+export function getTasks(params = {}) {
+    let url = `${apiUrl}/task`;
+    if (params.search) {
+        url = url+'?search='+params.search;
+    }
+
     return (dispatch) => {
         dispatch({ type: actionTypes.LOADING });
 
-        request(`${apiUrl}/task`)
+        request(url)
             .then(tasks => {
                 dispatch({ type: actionTypes.GET_TASKS_SUCCESS, tasks });
             })
