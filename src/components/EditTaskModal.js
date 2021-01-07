@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import { FormControl, Button, Modal, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import styles from './NewTask/newTask.module.css';
-import {connect} from 'react-redux';
-import {editTask} from '../store/actions';
+import { connect } from 'react-redux';
+import { editTask } from '../store/actions';
 
 class EditTaskModal extends PureComponent {
     constructor(props) {
@@ -18,6 +18,11 @@ class EditTaskModal extends PureComponent {
             validationType: null
         };
 
+        this.titleRef = createRef();
+    }
+
+    componentDidMount() {
+        this.titleRef.current.focus();
     }
 
     validationErrors = {
@@ -84,7 +89,7 @@ class EditTaskModal extends PureComponent {
             date: date.toISOString().slice(0, 10)
         };
 
-        const {editTask, from} = this.props;
+        const { editTask, from } = this.props;
         editTask(_id, data, from);
     };
 
@@ -121,6 +126,7 @@ class EditTaskModal extends PureComponent {
                             placeholder="Title"
                             aria-label="Title"
                             aria-describedby="basic-addon2"
+                            ref={this.titleRef}
                         />
                     </Form.Group>
                     <Form.Control
@@ -159,4 +165,4 @@ const mapDispatchToProps = {
     editTask
 };
 
-export default connect(null,mapDispatchToProps)(EditTaskModal);
+export default connect(null, mapDispatchToProps)(EditTaskModal);
