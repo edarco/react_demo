@@ -1,12 +1,18 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 
 export default function NotFound() {
     return (
-        <Card className='text-center'>
-            <Card.Body>
-                <Card.Text>Page not found!</Card.Text>
-            </Card.Body>
-        </Card>
+        <Container>
+            <Row>
+                <Col>
+                    <Card className='text-center'>
+                        <Card.Body>
+                            <Card.Text>Page not found!</Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 }

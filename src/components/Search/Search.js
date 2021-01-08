@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, InputGroup, FormControl, Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Col, Card, InputGroup, FormControl, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getTasks } from '../../store/actions';
 import { shortStr } from '../../helpers/utils';
@@ -120,7 +120,7 @@ function Search(props) {
 
 
     return (
-        <div className="w-100">
+        <Col>
             <Card>
                 <Card.Body>
                     <InputGroup className="mb-3">
@@ -134,6 +134,7 @@ function Search(props) {
                             <DropdownButton
                                 as={InputGroup.Append}
                                 variant="outline-secondary"
+                                className="ml-1"
                                 title={status.value ? status.label : "Status"}
                             >
                                 {
@@ -151,6 +152,7 @@ function Search(props) {
                             <DropdownButton
                                 as={InputGroup.Append}
                                 variant="outline-secondary"
+                                className="mx-1"
                                 title={sort.value ? shortStr(sort.label, 5) : "Sort"}
                             >
                                 {
@@ -166,7 +168,8 @@ function Search(props) {
                                 }
                             </DropdownButton>
                             <Button
-                                variant="outline-primary"
+                                variant="primary"
+                                className="rounded"
                                 onClick={handleSubmit}
                             >
                                 Search
@@ -195,7 +198,7 @@ function Search(props) {
                     </InputGroup>
                 </Card.Body>
             </Card>
-        </div>
+        </Col>
     )
 }
 

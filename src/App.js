@@ -8,6 +8,7 @@ import NotFound from './components/pages/NotFound';
 import Spinner from './components/Spinner/Spinner';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import NavMenu from './components/NavMenu';
+import Register from './components/pages/Register/Register';
 import { ToastContainer, toast } from 'react-toastify';
 import { connect } from 'react-redux';
 
@@ -30,13 +31,13 @@ class App extends PureComponent {
       <>
         <div className='app'>
           <NavMenu />
-          <Switch>
-            <Route path='/' exact component={ToDo} />
-            <Route path='/task/:id' exact component={SingleTask} />
-            <Route path='/not-found' exact component={NotFound} />
-            <Redirect to='/not-found' />
-          </Switch>
-
+            <Switch>
+              <Route path='/' exact component={ToDo} />
+              <Route path='/task/:id' exact component={SingleTask} />
+              <Route path='/not-found' exact component={NotFound} />
+              <Route path='/register' exact component={Register} />
+              <Redirect to='/not-found' />
+            </Switch>
           <ToastContainer
             position="bottom-left"
             autoClose={3000}
@@ -48,7 +49,6 @@ class App extends PureComponent {
             draggable
             pauseOnHover
           />
-
         </div>
         { showSpinner && <Spinner />}
       </>
