@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Card, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit, faCheck, faHistory } from '@fortawesome/free-solid-svg-icons';
 import EditTaskModal from '../EditTaskModal';
@@ -46,116 +46,120 @@ class SingleTask extends PureComponent {
         const { task, loading } = this.props;
 
         return (
-            <>
-                {
-                    task ?
-                        <Card border={task.status === 'active' ? 'info' : ''} className={task.status === 'active' ? 'text-center' : 'text-black-50 text-center'}>
-                            <Card.Body>
-                                <Card.Title as="h3" className="my-4">{task.title}</Card.Title>
-                                <Card.Text>
-                                    Description: {task.description}
-                                </Card.Text>
-                                <Card.Text>
-                                    Date: {formatDate(task.date)}
-                                </Card.Text>
-                                <Card.Text>
-                                    Created: {formatDate(task.created_at)}
-                                </Card.Text>
-                                <Card.Text>
-                                    Status: {task.status}
-                                </Card.Text>
-                                {
-                                    task.status === 'active' ?
-                                        < OverlayTrigger
-                                            placement="top"
-                                            overlay={
-                                                <Tooltip>
-                                                    <strong>Mark as done</strong>
-                                                </Tooltip>
-                                            }
-                                        >
-                                            <Button
-                                                className='m-1'
-                                                variant="success"
-                                                onClick={() => this.props.changeTaskStatus(task._id, { status: 'done' }, 'single')}
-                                            >
-                                                <FontAwesomeIcon icon={faCheck} />
-                                            </Button>
-                                        </OverlayTrigger>
-                                        :
+            <Container>
+                <Row>
+                    <Col>
+                        {
+                            task ?
+                                <Card className={task.status === 'active' ? 'text-center' : 'text-black-50 text-center'} border={task.status === 'active' ? 'info' : ''} >
+                                    <Card.Body>
+                                        <Card.Title as="h3" className="my-4">{task.title}</Card.Title>
+                                        <Card.Text>
+                                            Description: {task.description}
+                                        </Card.Text>
+                                        <Card.Text>
+                                            Date: {formatDate(task.date)}
+                                        </Card.Text>
+                                        <Card.Text>
+                                            Created: {formatDate(task.created_at)}
+                                        </Card.Text>
+                                        <Card.Text>
+                                            Status: {task.status}
+                                        </Card.Text>
+                                        {
+                                            task.status === 'active' ?
+                                                < OverlayTrigger
+                                                    placement="top"
+                                                    overlay={
+                                                        <Tooltip>
+                                                            <strong>Mark as done</strong>
+                                                        </Tooltip>
+                                                    }
+                                                >
+                                                    <Button
+                                                        className='m-1'
+                                                        variant="success"
+                                                        onClick={() => this.props.changeTaskStatus(task._id, { status: 'done' }, 'single')}
+                                                    >
+                                                        <FontAwesomeIcon icon={faCheck} />
+                                                    </Button>
+                                                </OverlayTrigger>
+                                                :
+                                                <OverlayTrigger
+                                                    placement="top"
+                                                    overlay={
+                                                        <Tooltip>
+                                                            <strong>Mark as active</strong>
+                                                        </Tooltip>
+                                                    }
+                                                >
+                                                    <Button
+                                                        className='m-1'
+                                                        variant="warning"
+                                                        onClick={() => this.props.changeTaskStatus(task._id, { status: 'active' }, 'single')}
+                                                    >
+                                                        <FontAwesomeIcon icon={faHistory} />
+                                                    </Button>
+                                                </OverlayTrigger>
+                                        }
                                         <OverlayTrigger
                                             placement="top"
                                             overlay={
                                                 <Tooltip>
-                                                    <strong>Mark as active</strong>
+                                                    <strong>Edit</strong>
                                                 </Tooltip>
                                             }
                                         >
                                             <Button
                                                 className='m-1'
-                                                variant="warning"
-                                                onClick={() => this.props.changeTaskStatus(task._id, { status: 'active' }, 'single')}
+                                                variant="info"
+                                                onClick={this.toggleEditModal}
                                             >
-                                                <FontAwesomeIcon icon={faHistory} />
+                                                <FontAwesomeIcon icon={faEdit} />
                                             </Button>
                                         </OverlayTrigger>
-                                }
-                                <OverlayTrigger
-                                    placement="top"
-                                    overlay={
-                                        <Tooltip>
-                                            <strong>Edit</strong>
-                                        </Tooltip>
-                                    }
-                                >
-                                    <Button
-                                        className='m-1'
-                                        variant="info"
-                                        onClick={this.toggleEditModal}
-                                    >
-                                        <FontAwesomeIcon icon={faEdit} />
-                                    </Button>
-                                </OverlayTrigger>
 
-                                <OverlayTrigger
-                                    placement="top"
-                                    overlay={
-                                        <Tooltip>
-                                            <strong>Remove</strong>
-                                        </Tooltip>
-                                    }
-                                >
-                                    <Button
-                                        className='m-1'
-                                        variant="danger"
-                                        onClick={this.handleRemove}
-                                    >
-                                        <FontAwesomeIcon icon={faTrash} />
-                                    </Button>
-                                </OverlayTrigger>
-                            </Card.Body>
-                            {
-                                isEdit &&
-                                <EditTaskModal
-                                    data={task}
-                                    onCancel={this.toggleEditModal}
-                                    from='single'
-                                />
-                            }
-                        </Card>
-                        :
-                        <>
-                            {
-                                loading ||
-                                <Card className='text-center'>
-                                    <Card.Body>
-                                        <Card.Text>Task is not found!</Card.Text>
+                                        <OverlayTrigger
+                                            placement="top"
+                                            overlay={
+                                                <Tooltip>
+                                                    <strong>Remove</strong>
+                                                </Tooltip>
+                                            }
+                                        >
+                                            <Button
+                                                className='m-1'
+                                                variant="danger"
+                                                onClick={this.handleRemove}
+                                            >
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            </Button>
+                                        </OverlayTrigger>
                                     </Card.Body>
+                                    {
+                                        isEdit &&
+                                        <EditTaskModal
+                                            data={task}
+                                            onCancel={this.toggleEditModal}
+                                            from='single'
+                                        />
+                                    }
                                 </Card>
-                            }
-                        </>
-                }
-            </>
+                                :
+                                <>
+                                    {
+                                        loading ||
+                                        <Card className='text-center'>
+                                            <Card.Body>
+                                                <Card.Text>Task is not found!</Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    }
+                                </>
+                        }
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }

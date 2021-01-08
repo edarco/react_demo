@@ -82,7 +82,7 @@ class ToDo extends PureComponent {
         const { tasks } = this.props;
 
         const tasksComponents = tasks.map((task) =>
-            <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={2} className="d-flex">
+            <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={3} className="d-flex">
                 <Task
                     data={task}
                     onCheck={this.handleCheck(task._id)}
@@ -93,24 +93,24 @@ class ToDo extends PureComponent {
         );
 
         return (
-            <Container fluid={true}>
+            <Container>
                 <Row>
                     <Search />
                     <Col md={{ span: 6, offset: 3 }} className="text-center">
                         <Button
                             variant="primary"
-                            className='m-3'
+                            className='m-3 my-4'
                             disabled={checkedTasks.size}
                             onClick={this.toggleNewTaskModal}
                         >
                             Add new task
-                                    </Button>
+                        </Button>
                     </Col>
                 </Row>
                 <Row>
                     {tasksComponents}
                 </Row>
-                <Row className='justify-content-center'>
+                <Row className='justify-content-center mb-3'>
                     <Button
                         variant="danger"
                         disabled={!checkedTasks.size}
