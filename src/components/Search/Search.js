@@ -23,7 +23,7 @@ const statusOptions = [
 
 const sortOptions = [
     {
-        label: 'All',
+        label: 'Default',
         value: ''
     },
     {
@@ -55,19 +55,19 @@ const sortOptions = [
 
 const dateOptions = [
     {
-        label: 'Create lte',
+        label: 'Created On/Before', // 'Create lte',
         value: 'create_lte'
     },
     {
-        label: 'Create gte',
+        label: 'Created On/After', // 'Create gte',
         value: 'create_gte'
     },
     {
-        label: 'Complete lte',
+        label: 'Tasks On/Before',
         value: 'complete_lte'
     },
     {
-        label: 'Complete gte',
+        label: 'Tasks On/After',
         value: 'complete_gte'
     }
 ];
