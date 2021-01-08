@@ -49,7 +49,7 @@ class SingleTask extends PureComponent {
             <>
                 {
                     task ?
-                        <Card border={task.status === 'active' && 'info'} className='text-center'>
+                        <Card border={task.status === 'active' ? 'info' : ''} className={task.status === 'active' ? 'text-center' : 'text-black-50 text-center'}>
                             <Card.Body>
                                 <Card.Title as="h3" className="my-4">{task.title}</Card.Title>
                                 <Card.Text>
