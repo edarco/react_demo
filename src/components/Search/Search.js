@@ -138,6 +138,7 @@ function Search(props) {
                             <DropdownButton
                                 as={InputGroup.Append}
                                 variant="outline-secondary"
+                                className="ml-1"
                                 title={status.value ? status.label : "Status"}
                             >
                                 {
