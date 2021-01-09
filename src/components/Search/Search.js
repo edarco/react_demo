@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Card, InputGroup, FormControl, Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Row, Col, Card, InputGroup, FormControl, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getTasks } from '../../store/actions';
 import { shortStr } from '../../helpers/utils';
@@ -55,11 +55,11 @@ const sortOptions = [
 
 const dateOptions = [
     {
-        label: 'Created On/Before', // 'Create lte',
+        label: 'Created On/Before',
         value: 'create_lte'
     },
     {
-        label: 'Created On/After', // 'Create gte',
+        label: 'Created On/After',
         value: 'create_gte'
     },
     {
@@ -123,18 +123,21 @@ function Search(props) {
         <Col>
             <Card>
                 <Card.Body>
+                    <Row>
                     <InputGroup className="mb-3">
+                        <Col className="mb-1">
                         <FormControl
                             placeholder="Search for a task..."
                             aria-describedby="basic-addon2"
                             onChange={handleInputChange}
                             value={search}
                         />
+                        </Col>
+                        <Col md="auto">
                         <InputGroup.Append>
                             <DropdownButton
                                 as={InputGroup.Append}
                                 variant="outline-secondary"
-                                className="ml-1"
                                 title={status.value ? status.label : "Status"}
                             >
                                 {
@@ -175,27 +178,33 @@ function Search(props) {
                                 Search
                             </Button>
                         </InputGroup.Append>
+                        </Col>
                     </InputGroup>
 
                     <InputGroup className="mb-3">
+                        
                         {
                             dateOptions.map((option, index) =>
-                                <div
-                                    className="mr-4"
+                                <Col
+                                    xs={12} sm={6} md="auto"
+                                    className="mr1111-4"
                                     key={index}
                                 >
                                     <div>{option.label}</div>
                                     <DatePicker
+                                        className="form-control"
                                         selected={dates[option.value]}
                                         onChange={(value) => setDates({
                                             ...dates,
                                             [option.value]: value
                                         })}
                                     />
-                                </div>
+                                </Col>
                             )
                         }
+                        
                     </InputGroup>
+                    </Row>
                 </Card.Body>
             </Card>
         </Col>
