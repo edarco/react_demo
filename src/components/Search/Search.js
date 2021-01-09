@@ -180,14 +180,12 @@ function Search(props) {
                         </InputGroup.Append>
                         </Col>
                     </InputGroup>
-
-                    <InputGroup className="mb-3">
+                    <InputGroup>
                         
                         {
                             dateOptions.map((option, index) =>
                                 <Col
                                     xs={12} sm={6} md="auto"
-                                    className="mr1111-4"
                                     key={index}
                                 >
                                     <div>{option.label}</div>
