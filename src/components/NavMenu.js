@@ -32,11 +32,18 @@ export default function NavMenu() {
                 >
                     Task
                 </NavLink>
+                <NavLink
+                    activeClassName='activeLink'
+                    to='/register'
+                    className='navLink'
+                >
+                    Register
+                </NavLink>
                 <Nav.Link
                     href="https://reactrouter.com/web/guides/quick-start"
                     target="_blank"
                 >
-                    Go to documentation
+                    Documentation
                 </Nav.Link>
             </Nav>
         </Navbar>
