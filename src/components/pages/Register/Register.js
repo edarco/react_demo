@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import styles from './registerStyle.module.css';
 import logo from '../../../logo-mini.png';
 
 function Register() {
+
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const confirmRef = useRef();
+
+    useEffect(()=>{
+        emailRef.current.focus();
+     },[]);
 
     const [values, setValues] = useState({
         email: '',
@@ -20,6 +28,22 @@ function Register() {
     const handleSubmit = (event) => {
         const { email, password, confirmPassword } = values;
 
+        let emailMessage = null;
+        if (!email) {
+            emailMessage = 'Email is required';
+        }
+        else if (!email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ) {
+            emailMessage = 'Please, enter valid email address';
+        }
+
+        let passwordMessage = null;
+        if (!password) {
+            passwordMessage = 'Password is required';
+        }
+        else if (password.length < 8) {
+            passwordMessage = 'Password must contain at least 8 characters';
+        }
+
         let confirmPasswordMessage = null;
         if (!confirmPassword) {
             confirmPasswordMessage = 'Please, confirm password';
@@ -29,17 +53,27 @@ function Register() {
         }
 
         setErrors({
-            email: email ? null : 'Email is required',
-            password: password ? null : 'Password is required',
+            email: emailMessage,
+            password: passwordMessage,
             confirmPassword: confirmPasswordMessage
         });
 
+        if (emailMessage) {
+            emailRef.current.focus();
+        }
+        else if (passwordMessage) {
+            passwordRef.current.focus();
+        }
+        else if (confirmPasswordMessage) {
+            confirmRef.current.focus();
+        }
+        
     };
 
     const handleChange = ({ target: { name, value } }) => {
         setValues({
             ...values,
-            [name]: value
+            [name]: value.replace(/ /g,'')
         });
 
         setErrors({
@@ -63,6 +97,7 @@ function Register() {
                                     className={errors.email ? styles.invalid : ''}
                                     type="email"
                                     name="email"
+                                    ref={emailRef}
                                     placeholder="Enter email"
                                     value={values.email}
                                     onChange={handleChange}
@@ -76,6 +111,7 @@ function Register() {
                                     className={errors.password ? styles.invalid : ''}
                                     type="password"
                                     name="password"
+                                    ref={passwordRef}
                                     placeholder="Password"
                                     value={values.password}
                                     onChange={handleChange}
@@ -89,6 +125,7 @@ function Register() {
                                     className={errors.confirmPassword ? styles.invalid : ''}
                                     type="password"
                                     name="confirmPassword"
+                                    ref={confirmRef}
                                     placeholder="Confirm Password"
                                     value={values.confirmPassword}
                                     onChange={handleChange}
