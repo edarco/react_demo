@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import styles from './NewTask/newTask.module.css';
 import { connect } from 'react-redux';
-import { editTask } from '../store/actions';
+import { editTask } from '../store/taskActions';
 
 class EditTaskModal extends PureComponent {
     constructor(props) {

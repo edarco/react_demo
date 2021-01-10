@@ -2,8 +2,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import styles from './registerStyle.module.css';
 import logo from '../../../logo-mini.png';
+import { register } from '../../../store/authActions';
+import { connect } from 'react-redux';
 
-function Register() {
+function Register(props) {
+
+    const nameRef = useRef();
+    const surnameRef = useRef();
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const confirmRef = useRef();
+
+    useEffect(() => {
+        nameRef.current.focus();
+    }, []);
+
+    const { registerSuccess, history } = props;
+    useEffect(() => {
+        if (registerSuccess) {
+            history.push('/login');
+        }
+    }, [registerSuccess]);
 
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -14,19 +33,49 @@ function Register() {
      },[]);
 
     const [values, setValues] = useState({
+        name: '',
+        surname: '',
         email: '',
         password: '',
         confirmPassword: ''
     });
 
     const [errors, setErrors] = useState({
+        name: null,
+        surname: null,
         email: null,
         password: null,
         confirmPassword: null
     });
 
     const handleSubmit = (event) => {
-        const { email, password, confirmPassword } = values;
+        const { name, surname, email, password, confirmPassword } = values;
+
+        let nameMessage = null;
+        if (!name) {
+            nameMessage = 'Name is required';
+        }
+
+        let surnameMessage = null;
+        if (!surname) {
+            surnameMessage = 'Surname is required';
+        }
+
+        let emailMessage = null;
+        if (!email) {
+            emailMessage = 'Email is required';
+        }
+        else if (!email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+            emailMessage = 'Please, enter valid email address';
+        }
+
+        let passwordMessage = null;
+        if (!password) {
+            passwordMessage = 'Password is required';
+        }
+        else if (password.length < 6) {
+            passwordMessage = 'Password must contain at least 6 characters';
+        }
 
         let emailMessage = null;
         if (!email) {
@@ -53,12 +102,20 @@ function Register() {
         }
 
         setErrors({
+            name: nameMessage,
+            surname: surnameMessage,
             email: emailMessage,
             password: passwordMessage,
             confirmPassword: confirmPasswordMessage
         });
 
-        if (emailMessage) {
+        if (nameMessage) {
+            nameRef.current.focus();
+        }
+        else if (surnameMessage) {
+            surnameRef.current.focus();
+        }
+        else if (emailMessage) {
             emailRef.current.focus();
         }
         else if (passwordMessage) {
@@ -67,13 +124,16 @@ function Register() {
         else if (confirmPasswordMessage) {
             confirmRef.current.focus();
         }
-        
+        else {
+            props.register(values);
+        }
+
     };
 
     const handleChange = ({ target: { name, value } }) => {
         setValues({
             ...values,
-            [name]: value.replace(/ /g,'')
+            [name]: value.replace(/ /g, '')
         });
 
         setErrors({
@@ -92,6 +152,34 @@ function Register() {
                         </div>
                         <Form>
                             <h3 className={styles.heading}>Register</h3>
+                            <Form.Group>
+                                <Form.Control
+                                    className={errors.name ? styles.invalid : ''}
+                                    type="text"
+                                    name="name"
+                                    ref={nameRef}
+                                    placeholder="Enter your name"
+                                    value={values.name}
+                                    onChange={handleChange}
+                                />
+                                <Form.Text className="text-danger">
+                                    {errors.name}
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Control
+                                    className={errors.surname ? styles.invalid : ''}
+                                    type="text"
+                                    name="surname"
+                                    ref={surnameRef}
+                                    placeholder="Enter your surname"
+                                    value={values.surname}
+                                    onChange={handleChange}
+                                />
+                                <Form.Text className="text-danger">
+                                    {errors.surname}
+                                </Form.Text>
+                            </Form.Group>
                             <Form.Group>
                                 <Form.Control
                                     className={errors.email ? styles.invalid : ''}
@@ -150,4 +238,14 @@ function Register() {
     );
 }
 
-export default Register;
+const mapStateToProps = (state) => {
+    return {
+        registerSuccess: state.authReducer.registerSuccess
+    };
+};
+
+const mapDispatchToProps = {
+    register
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

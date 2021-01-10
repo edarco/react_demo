@@ -5,7 +5,7 @@ import { faTrash, faEdit, faCheck, faHistory } from '@fortawesome/free-solid-svg
 import styles from './task.module.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { removeTask, changeTaskStatus } from '../../store/actions';
+import { removeTask, changeTaskStatus } from '../../store/taskActions';
 import { formatDate, shortStr } from '../../helpers/utils';
 import PropTypes from 'prop-types';
 

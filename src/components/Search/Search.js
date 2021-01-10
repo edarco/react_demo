@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Card, InputGroup, FormControl, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { getTasks } from '../../store/actions';
+import { getTasks } from '../../store/taskActions';
 import { shortStr } from '../../helpers/utils';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";

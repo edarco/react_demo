@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from 'react-redux';
-import { addTask } from '../../store/actions';
+import { addTask } from '../../store/taskActions';
 import styles from './newTask.module.css';
 
 class NewTask extends PureComponent {
