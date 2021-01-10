@@ -9,35 +9,44 @@ import Spinner from './components/Spinner/Spinner';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import NavMenu from './components/NavMenu';
 import Register from './components/pages/Register/Register';
+import Login from './components/pages/Login/Login';
 import { ToastContainer, toast } from 'react-toastify';
 import { connect } from 'react-redux';
 
 class App extends PureComponent {
 
   componentDidUpdate() {
-    const { errorMessage, successMessage } = this.props;
-    if (errorMessage) {
-      toast.error(errorMessage);
+    const { taskErrorMessage, taskSuccessMessage, authErrorMessage, authSuccessMessage } = this.props;
+    if (taskErrorMessage) {
+      toast.error(taskErrorMessage);
     }
-    if (successMessage) {
-      toast.success(successMessage);
+    if (taskSuccessMessage) {
+      toast.success(taskSuccessMessage);
+    }
+
+    if (authErrorMessage) {
+      toast.error(authErrorMessage);
+    }
+    if (authSuccessMessage) {
+      toast.success(authSuccessMessage);
     }
   }
 
   render() {
-    const { showSpinner } = this.props;
+    const { showTaskSpinner, showAuthSpinner } = this.props;
 
     return (
       <>
         <div className='app'>
           <NavMenu />
-            <Switch>
-              <Route path='/' exact component={ToDo} />
-              <Route path='/task/:id' exact component={SingleTask} />
-              <Route path='/not-found' exact component={NotFound} />
-              <Route path='/register' exact component={Register} />
-              <Redirect to='/not-found' />
-            </Switch>
+          <Switch>
+            <Route path='/' exact component={ToDo} />
+            <Route path='/task/:id' exact component={SingleTask} />
+            <Route path='/not-found' exact component={NotFound} />
+            <Route path='/register' exact component={Register} />
+            <Route path='/login' exact component={Login} />
+            <Redirect to='/not-found' />
+          </Switch>
           <ToastContainer
             position="bottom-left"
             autoClose={3000}
@@ -50,7 +59,7 @@ class App extends PureComponent {
             pauseOnHover
           />
         </div>
-        { showSpinner && <Spinner />}
+        { (showTaskSpinner || showAuthSpinner) && <Spinner />}
       </>
     );
   }
@@ -58,10 +67,14 @@ class App extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    errorMessage: state.error,
-    successMessage: state.successMessage,
-    showSpinner: state.loading
+    taskErrorMessage: state.taskReducer.error,
+    taskSuccessMessage: state.taskReducer.successMessage,
+    showTaskSpinner: state.taskReducer.loading,
+    authErrorMessage: state.authReducer.error,
+    authSuccessMessage: state.authReducer.successMessage,
+    showAuthSpinner: state.authReducer.loading
   }
 
 }
+
 export default connect(mapStateToProps, null)(App);

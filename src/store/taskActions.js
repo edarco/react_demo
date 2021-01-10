@@ -1,5 +1,5 @@
 import request from '../helpers/request';
-import * as actionTypes from './actionTypes';
+import * as actionTypes from './taskActionTypes';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

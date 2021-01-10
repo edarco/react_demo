@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from './taskActionTypes';
 
 const defaultState = {
     tasks: [],
@@ -13,7 +13,7 @@ const defaultState = {
 };
 
 
-export const mainReducer = (state = defaultState, action) => {
+export const taskReducer = (state = defaultState, action) => {
 
     const loadingState = {
         ...state,
@@ -24,9 +24,7 @@ export const mainReducer = (state = defaultState, action) => {
 
 
     switch (action.type) {
-        case actionTypes.LOADING: {
-            return loadingState;
-        }
+        case actionTypes.LOADING: return loadingState;
 
         case actionTypes.ERROR: {
             return {
@@ -60,7 +58,7 @@ export const mainReducer = (state = defaultState, action) => {
                 ...loadingState,
                 addTaskSuccess: false
             };
-        }    
+        }
 
         case actionTypes.ADD_TASK_SUCCESS: {
             return {
@@ -168,14 +166,12 @@ export const mainReducer = (state = defaultState, action) => {
         }
 
 
-        case actionTypes.CHANGING_TASK_STATUS: {
-            return loadingState;
-        }
+        case actionTypes.CHANGING_TASK_STATUS: return loadingState;
 
         case actionTypes.CHANGE_TASK_STATUS_SUCCESS: {
             let message;
 
-            if(action.status === 'done') {
+            if (action.status === 'done') {
                 message = 'Congratulations, you have completed the task 🎉!!!';
             }
             else {

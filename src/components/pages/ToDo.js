@@ -6,7 +6,7 @@ import Confirm from '../Confirm';
 import EditTaskModal from '../EditTaskModal';
 import Search from '../Search/Search';
 import { connect } from 'react-redux';
-import { getTasks, removeTasks } from '../../store/actions';
+import { getTasks, removeTasks } from '../../store/taskActions';
 
 class ToDo extends PureComponent {
     state = {
@@ -145,10 +145,10 @@ class ToDo extends PureComponent {
 
 const mapStateToProps = (state) => {
     return {
-        tasks: state.tasks,
-        addTaskSuccess: state.addTaskSuccess,
-        removeTasksSuccess: state.removeTasksSuccess,
-        editTaskSuccess: state.editTaskSuccess
+        tasks: state.taskReducer.tasks,
+        addTaskSuccess: state.taskReducer.addTaskSuccess,
+        removeTasksSuccess: state.taskReducer.removeTasksSuccess,
+        editTaskSuccess: state.taskReducer.editTaskSuccess
     };
 };
 
