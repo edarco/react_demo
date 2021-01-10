@@ -22,7 +22,7 @@ function Register(props) {
         if (registerSuccess) {
             history.push('/login');
         }
-    }, [registerSuccess]);
+    }, [registerSuccess, history]);
 
     const [values, setValues] = useState({
         name: '',
