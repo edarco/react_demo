@@ -24,14 +24,6 @@ function Register(props) {
         }
     }, [registerSuccess]);
 
-    const emailRef = useRef();
-    const passwordRef = useRef();
-    const confirmRef = useRef();
-
-    useEffect(()=>{
-        emailRef.current.focus();
-     },[]);
-
     const [values, setValues] = useState({
         name: '',
         surname: '',
@@ -75,22 +67,6 @@ function Register(props) {
         }
         else if (password.length < 6) {
             passwordMessage = 'Password must contain at least 6 characters';
-        }
-
-        let emailMessage = null;
-        if (!email) {
-            emailMessage = 'Email is required';
-        }
-        else if (!email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ) {
-            emailMessage = 'Please, enter valid email address';
-        }
-
-        let passwordMessage = null;
-        if (!password) {
-            passwordMessage = 'Password is required';
-        }
-        else if (password.length < 8) {
-            passwordMessage = 'Password must contain at least 8 characters';
         }
 
         let confirmPasswordMessage = null;
