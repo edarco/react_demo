@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import styles from './registerStyle.module.css';
 import logo from '../../../logo-mini.png';
 import { register } from '../../../store/authActions';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 function Register(props) {
@@ -206,6 +207,9 @@ function Register(props) {
                                     Register
                                 </Button>
                             </div>
+                            <div className="text-center mt-5">
+                                <Link to="/login">Already registered? Try to login</Link>
+                                </div>
                         </Form>
                     </Col>
                 </Row>
