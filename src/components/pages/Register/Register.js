@@ -18,13 +18,6 @@ function Register(props) {
         nameRef.current.focus();
     }, []);
 
-    const { registerSuccess, history } = props;
-    useEffect(() => {
-        if (registerSuccess) {
-            history.push('/login');
-        }
-    }, [registerSuccess, history]);
-
     const [values, setValues] = useState({
         name: '',
         surname: '',
@@ -209,7 +202,7 @@ function Register(props) {
                             </div>
                             <div className="text-center mt-5">
                                 <Link to="/login">Already registered? Try to login</Link>
-                                </div>
+                            </div>
                         </Form>
                     </Col>
                 </Row>
@@ -218,14 +211,8 @@ function Register(props) {
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        registerSuccess: state.authReducer.registerSuccess
-    };
-};
-
 const mapDispatchToProps = {
     register
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(null, mapDispatchToProps)(Register);
