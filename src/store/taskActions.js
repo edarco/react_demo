@@ -116,9 +116,9 @@ export function changeTaskStatus(taskId, data, from = 'tasks') {
 
         request(`${apiUrl}/task/${taskId}`, 'PUT', data)
             .then(editedTask => {
-                dispatch({ 
-                    type: actionTypes.CHANGE_TASK_STATUS_SUCCESS, 
-                    editedTask, 
+                dispatch({
+                    type: actionTypes.CHANGE_TASK_STATUS_SUCCESS,
+                    editedTask,
                     from,
                     status: data.status
                 });

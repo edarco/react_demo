@@ -15,6 +15,6 @@ const middlewares = applyMiddleware(...middlewaresArr);
 const mainReducer = combineReducers({
     taskReducer,
     authReducer
-})
+});
 
 export const store = createStore(mainReducer, composeWithDevTools(middlewares));
