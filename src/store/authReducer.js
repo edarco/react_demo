@@ -2,8 +2,11 @@ import * as actionTypes from './authActionTypes';
 import { checkLoginStatus } from '../helpers/auth';
 
 const defaultState = {
-    userId: null,
-    isAuthenticated: checkLoginStatus()
+    isAuthenticated: checkLoginStatus(),
+    loading: false,
+    successMessage: null,
+    error: null,
+    userInfo: null
 };
 
 
@@ -49,11 +52,21 @@ export const authReducer = (state = defaultState, action) => {
 
         case actionTypes.LOGOUT_SUCCESS: {
             return {
-                ...state,
-                loading: false,
+                ...defaultState,
                 isAuthenticated: false
             };
         }
+
+
+        case actionTypes.GET_USER_INFO_SUCCESS: {
+            return {
+                ...state,
+                loading: false,
+                userInfo: action.userInfo
+            };
+        }
+
+
         default: return state;
     }
 };
