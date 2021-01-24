@@ -113,7 +113,7 @@ class ToDo extends PureComponent {
                 <Row className='justify-content-center mb-3'>
                     <Button
                         variant="danger"
-                        disabled={!checkedTasks.size}
+                        hidden={!checkedTasks.size}
                         onClick={this.toggleConfirm}
                     >
                         Remove selected
