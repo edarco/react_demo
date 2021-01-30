@@ -21,7 +21,12 @@ export const taskReducer = (state = defaultState, action) => {
         ...state,
         loading: true,
         successMessage: null,
-        error: null
+        error: null,
+        addTaskSuccess: false,
+        editTaskSuccess: false,
+        removeTaskSuccess: false,
+        removeTasksSuccess: false,
+        sendMessageSuccess: false
     };
 
 
@@ -66,13 +71,6 @@ export const taskReducer = (state = defaultState, action) => {
         }
 
 
-        case actionTypes.ADDING_TASK: {
-            return {
-                ...loadingState,
-                addTaskSuccess: false
-            };
-        }
-
         case actionTypes.ADD_TASK_SUCCESS: {
             return {
                 ...state,
@@ -83,13 +81,6 @@ export const taskReducer = (state = defaultState, action) => {
             };
         }
 
-
-        case actionTypes.REMOVING_TASK: {
-            return {
-                ...loadingState,
-                removeTaskSuccess: false
-            };
-        }
 
         case actionTypes.REMOVE_TASK_SUCCESS: {
 
@@ -118,13 +109,6 @@ export const taskReducer = (state = defaultState, action) => {
         }
 
 
-        case actionTypes.REMOVING_TASKS: {
-            return {
-                ...loadingState,
-                removeTasksSuccess: false
-            };
-        }
-
         case actionTypes.REMOVE_TASKS_SUCCESS: {
 
             let newTasks = [...state.tasks];
@@ -142,13 +126,6 @@ export const taskReducer = (state = defaultState, action) => {
             };
         }
 
-
-        case actionTypes.EDITING_TASK: {
-            return {
-                ...loadingState,
-                editTaskSuccess: false
-            };
-        }
 
         case actionTypes.EDIT_TASK_SUCCESS: {
 
@@ -178,8 +155,6 @@ export const taskReducer = (state = defaultState, action) => {
 
         }
 
-
-        case actionTypes.CHANGING_TASK_STATUS: return loadingState;
 
         case actionTypes.CHANGE_TASK_STATUS_SUCCESS: {
             let message;
@@ -216,13 +191,6 @@ export const taskReducer = (state = defaultState, action) => {
 
         }
 
-
-        case actionTypes.SENDING_MESSAGE: {
-            return {
-                ...loadingState,
-                sendMessageSuccess: false
-            };
-        }
 
         case actionTypes.SEND_MESSAGE_SUCCESS: {
             return {

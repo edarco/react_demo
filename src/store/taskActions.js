@@ -52,7 +52,7 @@ export function getTasks(params = {}) {
 
 export function addTask(data) {
     return (dispatch) => {
-        dispatch({ type: actionTypes.ADDING_TASK });
+        dispatch({ type: actionTypes.LOADING });
 
         request(`${apiUrl}/task`, 'POST', data)
             .then(task => {
@@ -67,7 +67,7 @@ export function addTask(data) {
 
 export function removeTask(taskId, from = 'tasks') {
     return (dispatch) => {
-        dispatch({ type: actionTypes.REMOVING_TASK });
+        dispatch({ type: actionTypes.LOADING });
 
         request(`${apiUrl}/task/${taskId}`, 'DELETE')
             .then(() => {
@@ -82,7 +82,7 @@ export function removeTask(taskId, from = 'tasks') {
 
 export function removeTasks(data) {
     return (dispatch) => {
-        dispatch({ type: actionTypes.REMOVING_TASKS });
+        dispatch({ type: actionTypes.LOADING });
 
         request(`${apiUrl}/task/`, 'PATCH', data)
             .then(() => {
@@ -97,7 +97,7 @@ export function removeTasks(data) {
 
 export function editTask(taskId, data, from = 'tasks') {
     return (dispatch) => {
-        dispatch({ type: actionTypes.EDITING_TASK });
+        dispatch({ type: actionTypes.LOADING });
 
         request(`${apiUrl}/task/${taskId}`, 'PUT', data)
             .then(editedTask => {
@@ -112,7 +112,7 @@ export function editTask(taskId, data, from = 'tasks') {
 
 export function changeTaskStatus(taskId, data, from = 'tasks') {
     return (dispatch) => {
-        dispatch({ type: actionTypes.CHANGING_TASK_STATUS });
+        dispatch({ type: actionTypes.LOADING });
 
         request(`${apiUrl}/task/${taskId}`, 'PUT', data)
             .then(editedTask => {
@@ -132,7 +132,7 @@ export function changeTaskStatus(taskId, data, from = 'tasks') {
 
 export function sendMessage(data) {
     return (dispatch) => {
-        dispatch({ type: actionTypes.SENDING_MESSAGE });
+        dispatch({ type: actionTypes.LOADING });
 
         request(`${apiUrl}/form`, 'POST', data)
             .then(() => {
