@@ -26,6 +26,8 @@ function Login(props) {
     });
 
     const handleSubmit = (event) => {
+        event.preventDefault();
+
         const { email, password } = values;
 
         let emailMessage = null;
@@ -75,7 +77,7 @@ function Login(props) {
                         <div className={styles.logo}>
                             <img src={logo} width="100" height="100" alt="Logo" />
                         </div>
-                        <Form>
+                        <Form onSubmit={handleSubmit}>
                             <h3 className={styles.heading}>Login</h3>
                             <Form.Group>
                                 <Form.Control
@@ -108,13 +110,13 @@ function Login(props) {
                             <div className={styles.submitContainer}>
                                 <Button
                                     variant="primary"
-                                    onClick={handleSubmit}
+                                    type="submit"
                                 >
                                     Login
                                 </Button>
                             </div>
                             <div className="text-center mt-5">
-                            <Link to="/register">Don't have account yet? Register now!</Link>
+                                <Link to="/register">Don't have account yet? Register now!</Link>
                             </div>
                         </Form>
                     </Col>

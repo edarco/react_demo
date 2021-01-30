@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, InputGroup, FormControl, Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Row, Col, Card, InputGroup, FormControl, Button, DropdownButton, Dropdown, Collapse } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faSlidersH } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { getTasks } from '../../store/taskActions';
 import { shortStr } from '../../helpers/utils';
+import testMobile from '../../helpers/testMobile';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -55,7 +58,7 @@ const sortOptions = [
 
 const dateOptions = [
     {
-        label: 'Created On/Before',
+        label: 'Created Before',
         value: 'create_lte'
     },
     {
@@ -63,16 +66,16 @@ const dateOptions = [
         value: 'create_gte'
     },
     {
-        label: 'Tasks On/Before',
+        label: 'Complete Before',
         value: 'complete_lte'
     },
     {
-        label: 'Tasks On/After',
+        label: 'Complete On/After',
         value: 'complete_gte'
     }
 ];
 
-
+const isMobile = testMobile();
 
 function Search(props) {
 
@@ -119,93 +122,158 @@ function Search(props) {
     };
 
 
+    const [filters, setFilters] = useState(false);
+
+    const toggleFilters = () => setFilters(!filters);
+
+    const statusFilter = (
+        <DropdownButton
+            as={InputGroup.Append}
+            variant="outline-secondary"
+            className="ml-1"
+            title={status.value ? status.label : "Status"}
+        >
+            {
+                statusOptions.map((option, index) =>
+                    <Dropdown.Item
+                        key={index}
+                        active={status.value === option.value}
+                        onClick={() => setStatus(option)}
+                    >
+                        {option.label}
+                    </Dropdown.Item>
+                )
+            }
+        </DropdownButton>
+    );
+
+
+    const sortFilter = (
+        <DropdownButton
+            as={InputGroup.Append}
+            variant="outline-secondary"
+            className="mx-1"
+            title={sort.value ? shortStr(sort.label, 5) : "Sort"}
+        >
+            {
+                sortOptions.map((option, index) =>
+                    <Dropdown.Item
+                        key={index}
+                        active={sort.value === option.value}
+                        onClick={() => setSort(option)}
+                    >
+                        {option.label}
+                    </Dropdown.Item>
+                )
+            }
+        </DropdownButton>
+    );
+
+
+    const dateFilters = (
+        dateOptions.map((option, index) =>
+            <Col
+                xs={12} sm={6} md="auto"
+                key={index}
+            >
+                <div>{option.label}</div>
+                <DatePicker
+                    className="form-control"
+                    selected={dates[option.value]}
+                    onChange={(value) => setDates({
+                        ...dates,
+                        [option.value]: value
+                    })}
+                />
+            </Col>
+        )
+    );
+
+
     return (
-        <Col>
-            <Card>
-                <Card.Body>
-                    <Row>
-                    <InputGroup className="mb-3">
-                        <Col className="mb-1">
-                        <FormControl
-                            placeholder="Search for a task..."
-                            aria-describedby="basic-addon2"
-                            onChange={handleInputChange}
-                            value={search}
-                        />
-                        </Col>
-                        <Col md="auto">
-                        <InputGroup.Append>
-                            <DropdownButton
-                                as={InputGroup.Append}
-                                variant="outline-secondary"
-                                className="ml-1"
-                                title={status.value ? status.label : "Status"}
-                            >
-                                {
-                                    statusOptions.map((option, index) =>
-                                        <Dropdown.Item
-                                            key={index}
-                                            active={status.value === option.value}
-                                            onClick={() => setStatus(option)}
-                                        >
-                                            {option.label}
-                                        </Dropdown.Item>
-                                    )
-                                }
-                            </DropdownButton>
-                            <DropdownButton
-                                as={InputGroup.Append}
-                                variant="outline-secondary"
-                                className="mx-1"
-                                title={sort.value ? shortStr(sort.label, 5) : "Sort"}
-                            >
-                                {
-                                    sortOptions.map((option, index) =>
-                                        <Dropdown.Item
-                                            key={index}
-                                            active={sort.value === option.value}
-                                            onClick={() => setSort(option)}
-                                        >
-                                            {option.label}
-                                        </Dropdown.Item>
-                                    )
-                                }
-                            </DropdownButton>
-                            <Button
-                                variant="primary"
-                                className="rounded"
-                                onClick={handleSubmit}
-                            >
-                                Search
-                            </Button>
-                        </InputGroup.Append>
-                        </Col>
-                    </InputGroup>
-                    <InputGroup>
-                        
-                        {
-                            dateOptions.map((option, index) =>
-                                <Col
-                                    xs={12} sm={6} md="auto"
-                                    key={index}
+        <Col sm={12}>
+            {
+                isMobile ?
+                    <>
+                        <InputGroup className="mb-2">
+                            <InputGroup.Prepend>
+                                <Button
+                                    variant={filters ? "primary" : "outline-secondary"}
+                                    onClick={toggleFilters}
                                 >
-                                    <div>{option.label}</div>
-                                    <DatePicker
-                                        className="form-control"
-                                        selected={dates[option.value]}
-                                        onChange={(value) => setDates({
-                                            ...dates,
-                                            [option.value]: value
-                                        })}
-                                    />
-                                </Col>
-                            )
-                        }
-                        
-                    </InputGroup>
-                    </Row>
-                </Card.Body>
-            </Card>
+                                    <FontAwesomeIcon icon={faSlidersH} />
+                                </Button>
+                            </InputGroup.Prepend>
+                            <FormControl
+                                placeholder="Search for a task..."
+                                aria-describedby="basic-addon2"
+                                onChange={handleInputChange}
+                                value={search}
+                            />
+                            <InputGroup.Append>
+                                <Button
+                                    variant="primary"
+                                    onClick={handleSubmit}
+                                >
+                                    <FontAwesomeIcon icon={faSearch} />
+                                </Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                        <Collapse in={filters}>
+                            <Card>
+                                <Card.Body>
+                                    <Row>
+                                        <InputGroup>
+                                            <Col xs={12}>
+                                                <InputGroup.Append>
+                                                    {statusFilter}
+                                                    {sortFilter}
+                                                </InputGroup.Append>
+                                            </Col>
+                                        </InputGroup>
+                                        <InputGroup>
+                                            {dateFilters}
+                                        </InputGroup>
+                                    </Row>
+                                </Card.Body>
+                            </Card>
+                        </Collapse>
+                    </>
+                    :
+                    <Card>
+                        <Card.Body>
+                            <Row>
+                                <InputGroup className="mb-3">
+                                    <Col className="mb-1">
+                                        <FormControl
+                                            placeholder="Search for a task..."
+                                            aria-describedby="basic-addon2"
+                                            onChange={handleInputChange}
+                                            value={search}
+                                        />
+                                    </Col>
+                                    <Col md="auto">
+                                        <InputGroup.Append>
+                                            {statusFilter}
+                                            {sortFilter}
+                                            <Button
+                                                variant="primary"
+                                                className="rounded"
+                                                onClick={handleSubmit}
+                                            >
+                                                <FontAwesomeIcon icon={faSearch} className="mr-2" />
+                                                Search
+                                            </Button>
+                                        </InputGroup.Append>
+                                    </Col>
+                                </InputGroup>
+                                <InputGroup>
+                                    {dateFilters}
+                                </InputGroup>
+                            </Row>
+                        </Card.Body>
+                    </Card>
+            }
         </Col>
     )
 }

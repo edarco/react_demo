@@ -102,7 +102,7 @@ function logout() {
 }
 
 
-export function getLocalJWT(){
+export function getLocalJWT() {
     const token = localStorage.getItem('token');
     if (!token) {
         return null;

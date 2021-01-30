@@ -33,7 +33,7 @@ class Task extends PureComponent {
         const { data, removeTask, onEdit, disabled } = this.props;
         const { checked } = this.state;
 
-        const cardClasses = ['card w-100', styles.task];
+        const cardClasses = ['card w-100', styles.task, 'text-center'];
         if (checked) {
             cardClasses.push(styles.checked);
         }
@@ -60,21 +60,23 @@ class Task extends PureComponent {
                             <Card.Title>{data.title}</Card.Title>
                             :
                             <Link to={`/task/${data._id}`}>
-                                <Card.Title>{data.title}</Card.Title>
+                                <Card.Title className={styles.title}>{data.title}</Card.Title>
                             </Link>
                     }
                     <Card.Text>
-                        Description: {shortStr(data.description, 25)}
+                        {shortStr(data.description, 56)}
                     </Card.Text>
                     <Card.Text>
                         Date: {formatDate(data.date)}
                     </Card.Text>
                     <Card.Text>
-                        Created: {formatDate(data.created_at)}
+                        Created at: {formatDate(data.created_at)}
                     </Card.Text>
                     <Card.Text>
                         Status: {data.status}
                     </Card.Text>
+                </Card.Body>
+                <Card.Footer className="text-muted">
                     <div className={styles.buttonsGroup}>
                         {
                             data.status === 'active' ?
@@ -148,8 +150,7 @@ class Task extends PureComponent {
                                 <FontAwesomeIcon icon={faTrash} />
                             </Button>
                         </OverlayTrigger>
-                    </div>
-                </Card.Body>
+                    </div></Card.Footer>
             </Card >
         );
     }

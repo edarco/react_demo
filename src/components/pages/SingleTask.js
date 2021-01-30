@@ -61,7 +61,7 @@ class SingleTask extends PureComponent {
                                             Date: {formatDate(task.date)}
                                         </Card.Text>
                                         <Card.Text>
-                                            Created: {formatDate(task.created_at)}
+                                            Created at: {formatDate(task.created_at)}
                                         </Card.Text>
                                         <Card.Text>
                                             Status: {task.status}

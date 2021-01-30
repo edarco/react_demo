@@ -10,7 +10,8 @@ const defaultState = {
     removeTaskSuccess: false,
     removeTasksSuccess: false,
     editTaskSuccess: false,
-    successMessage: null
+    successMessage: null,
+    sendMessageSuccess: false
 };
 
 
@@ -213,6 +214,23 @@ export const taskReducer = (state = defaultState, action) => {
                 };
             }
 
+        }
+
+
+        case actionTypes.SENDING_MESSAGE: {
+            return {
+                ...loadingState,
+                sendMessageSuccess: false
+            };
+        }
+
+        case actionTypes.SEND_MESSAGE_SUCCESS: {
+            return {
+                ...state,
+                loading: false,
+                sendMessageSuccess: true,
+                successMessage: 'Message successfully sent!!!'
+            };
         }
 
         default: return state;

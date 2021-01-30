@@ -35,6 +35,8 @@ function Register(props) {
     });
 
     const handleSubmit = (event) => {
+        event.preventDefault();
+
         const { name, surname, email, password, confirmPassword } = values;
 
         let nameMessage = null;
@@ -120,7 +122,7 @@ function Register(props) {
                         <div className={styles.logo}>
                             <img src={logo} width="100" height="100" alt="Logo" />
                         </div>
-                        <Form>
+                        <Form onSubmit={handleSubmit}>
                             <h3 className={styles.heading}>Register</h3>
                             <Form.Group>
                                 <Form.Control
@@ -195,7 +197,7 @@ function Register(props) {
                             <div className={styles.submitContainer}>
                                 <Button
                                     variant="primary"
-                                    onClick={handleSubmit}
+                                    type="submit"
                                 >
                                     Register
                                 </Button>
