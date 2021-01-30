@@ -81,7 +81,7 @@ export function getUserInfo() {
 
 export function updateUserInfo(data) {
     return (dispatch) => {
-        dispatch({ type: actionTypes.UPDATING_USER_INFO });
+        dispatch({ type: actionTypes.AUTH_LOADING });
 
         request(`${apiUrl}/user`, "PUT", data)
             .then(data => {
@@ -96,7 +96,7 @@ export function updateUserInfo(data) {
 
 export function changePassword(data) {
     return (dispatch) => {
-        dispatch({ type: actionTypes.CHANGING_PASSWORD });
+        dispatch({ type: actionTypes.AUTH_LOADING });
 
         request(`${apiUrl}/user/password`, "PUT", data)
             .then(data => {

@@ -19,7 +19,9 @@ export const authReducer = (state = defaultState, action) => {
         ...state,
         loading: true,
         successMessage: null,
-        error: null
+        error: null,
+        updateUsernameSuccess: false,
+        changePasswordSuccess: false
     };
 
 
@@ -78,14 +80,6 @@ export const authReducer = (state = defaultState, action) => {
         }
 
 
-
-        case actionTypes.UPDATING_USER_INFO: {
-            return {
-                ...loadingState,
-                updateUsernameSuccess: false
-            };
-        }
-
         case actionTypes.UPDATE_USER_INFO_SUCCESS: {
             return {
                 ...state,
@@ -96,14 +90,6 @@ export const authReducer = (state = defaultState, action) => {
             };
         }
 
-
-
-        case actionTypes.CHANGING_PASSWORD: {
-            return {
-                ...loadingState,
-                changePasswordSuccess: false
-            };
-        }
 
         case actionTypes.CHANGE_PASSWORD_SUCCESS: {
             return {
