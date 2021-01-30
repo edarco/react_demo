@@ -1,0 +1,14 @@
+.thumbnail {
+  background-image: url(./caveman.gif);
+  height: 400px;
+  background-position: center;
+}
+.mobile {
+  background-image: url(./caveman.jpg);
+}
+.thumbnail h1 {
+  font-size: 5rem;
+}
+.content {
+  margin-top: -50px;
+}

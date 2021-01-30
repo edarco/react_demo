@@ -128,3 +128,20 @@ export function changeTaskStatus(taskId, data, from = 'tasks') {
             });
     }
 }
+
+
+export function sendMessage(data) {
+    return (dispatch) => {
+        dispatch({ type: actionTypes.SENDING_MESSAGE });
+
+        request(`${apiUrl}/form`, 'POST', data)
+            .then(() => {
+                dispatch({ type: actionTypes.SEND_MESSAGE_SUCCESS });
+            })
+            .catch(err => {
+                dispatch({ type: actionTypes.ERROR, error: err.message });
+            });
+    }
+}
+
+

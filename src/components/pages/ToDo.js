@@ -79,7 +79,7 @@ class ToDo extends PureComponent {
 
     render() {
         const { checkedTasks, showConfirm, editTask, openNewTaskModal } = this.state;
-        const { tasks } = this.props;
+        const { tasks, loading } = this.props;
 
         const tasksComponents = tasks.map((task) =>
             <Col key={task._id} xs={12} sm={6} md={4} lg={3} xl={3} className="d-flex">
@@ -108,7 +108,7 @@ class ToDo extends PureComponent {
                     </Col>
                 </Row>
                 <Row>
-                    {tasks.length ? tasksComponents : 'Tasks not found!'}
+                    {tasks.length ? tasksComponents : loading || 'Tasks not found!'}
                 </Row>
                 <Row className='justify-content-center mb-3'>
                     <Button
@@ -145,6 +145,7 @@ class ToDo extends PureComponent {
 
 const mapStateToProps = (state) => {
     return {
+        loading: state.taskReducer.loading,
         tasks: state.taskReducer.tasks,
         addTaskSuccess: state.taskReducer.addTaskSuccess,
         removeTasksSuccess: state.taskReducer.removeTasksSuccess,

@@ -76,3 +76,34 @@ export function getUserInfo() {
             });
     }
 }
+
+
+
+export function updateUserInfo(data) {
+    return (dispatch) => {
+        dispatch({ type: actionTypes.UPDATING_USER_INFO });
+
+        request(`${apiUrl}/user`, "PUT", data)
+            .then(data => {
+                dispatch({ type: actionTypes.UPDATE_USER_INFO_SUCCESS, userInfo: data });
+            })
+            .catch(err => {
+                dispatch({ type: actionTypes.AUTH_ERROR, error: err.message });
+            });
+    }
+}
+
+
+export function changePassword(data) {
+    return (dispatch) => {
+        dispatch({ type: actionTypes.CHANGING_PASSWORD });
+
+        request(`${apiUrl}/user/password`, "PUT", data)
+            .then(data => {
+                dispatch({ type: actionTypes.CHANGE_PASSWORD_SUCCESS });
+            })
+            .catch(err => {
+                dispatch({ type: actionTypes.AUTH_ERROR, error: err.message });
+            });
+    }
+}

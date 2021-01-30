@@ -1,28 +1,28 @@
 .main {
-    min-height: calc(100vh - 76px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .heading {
-    margin: 20px;
-    text-align: center;
+  margin: 20px;
+  text-align: center;
 }
 
 .submitContainer {
-    text-align: center;
+  text-align: center;
 }
 
 .submitContainer [type="button"] {
-    width: 40%;
+  width: 40%;
 }
 
 .logo {
-    margin-bottom: 10px;
-    text-align: center;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .invalid {
-    border: 1px solid red;
+  border: 1px solid red;
 }

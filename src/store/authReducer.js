@@ -1,4 +1,5 @@
 import * as actionTypes from './authActionTypes';
+import { LOADING } from './taskActionTypes';
 import { checkLoginStatus } from '../helpers/auth';
 
 const defaultState = {
@@ -6,7 +7,9 @@ const defaultState = {
     loading: false,
     successMessage: null,
     error: null,
-    userInfo: null
+    userInfo: null,
+    updateUsernameSuccess: false,
+    changePasswordSuccess: false
 };
 
 
@@ -22,6 +25,14 @@ export const authReducer = (state = defaultState, action) => {
 
     switch (action.type) {
         case actionTypes.AUTH_LOADING: return loadingState;
+
+        case LOADING: {
+            return {
+                ...state,
+                successMessage: null,
+                error: null
+            };
+        }
 
         case actionTypes.AUTH_ERROR: {
             return {
@@ -66,6 +77,42 @@ export const authReducer = (state = defaultState, action) => {
             };
         }
 
+
+
+        case actionTypes.UPDATING_USER_INFO: {
+            return {
+                ...loadingState,
+                updateUsernameSuccess: false
+            };
+        }
+
+        case actionTypes.UPDATE_USER_INFO_SUCCESS: {
+            return {
+                ...state,
+                loading: false,
+                userInfo: action.userInfo,
+                updateUsernameSuccess: true,
+                successMessage: 'User info successfully updated!!!'
+            };
+        }
+
+
+
+        case actionTypes.CHANGING_PASSWORD: {
+            return {
+                ...loadingState,
+                changePasswordSuccess: false
+            };
+        }
+
+        case actionTypes.CHANGE_PASSWORD_SUCCESS: {
+            return {
+                ...state,
+                loading: false,
+                changePasswordSuccess: true,
+                successMessage: 'Password successfully changed!!!'
+            };
+        }
 
         default: return state;
     }

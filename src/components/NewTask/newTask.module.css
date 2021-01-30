@@ -1,7 +1,8 @@
-.datePicker>div, .datePicker input {
-    width: 100%;
+.datePicker > div,
+.datePicker input {
+  width: 100%;
 }
 
 .invalid {
-    border: 1px solid #f00;
+  border: 1px solid #f00;
 }
