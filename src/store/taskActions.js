@@ -134,7 +134,7 @@ export function sendMessage(data) {
     return (dispatch) => {
         dispatch({ type: actionTypes.LOADING });
 
-        request(`${apiUrl}/form`, 'POST', data)
+        request(`${apiUrl}/form`, 'POST', data, false)
             .then(() => {
                 dispatch({ type: actionTypes.SEND_MESSAGE_SUCCESS });
             })
